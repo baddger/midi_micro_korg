@@ -80,7 +80,9 @@ Pot MPO40(M3, 7, 0, 88, 1);
 //---How many buttons are connected directly to pins?---------
 byte NUMBER_BUTTONS = 0;
 //---How many potentiometers are connected directly to pins?--
-byte NUMBER_POTS = 0;
+byte NUMBER_POTS = 1;
+
+
 //---How many buttons are connected to a multiplexer?---------
 byte NUMBER_MUX_BUTTONS = 0;
 //---How many potentiometers are connected to a multiplexer?--
@@ -90,7 +92,9 @@ byte NUMBER_MUX_POTS = 40; //
 Button *BUTTONS[] {};
 //*******************************************************************
 Button *MUXBUTTONS[] {};
-Pot *POTS[] {};
+Pot PotVolume( A6, 0x07, 0x07, 1);
+
+Pot *POTS[] {&PotVolume};
 
 //*******************************************************************
 //Add multiplexed pots used to array below like this->  Pot *MUXPOTS[] {&MPO1, &MPO2, &MPO3, &MPO4, &MPO5, &MPO6.....};
