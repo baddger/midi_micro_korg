@@ -6,7 +6,7 @@
 #include <Adafruit_GFX.h>
 #include <Adafruit_SSD1306.h>
 #include <avr/pgmspace.h>
-#include <Fonts/FreeSerif9pt7b.h>
+#include <Fonts/FreeSerifBoldItalic18pt7b.h>
 #include <MIDI.h>
 
 /// OLED
@@ -139,8 +139,8 @@ void setup() {
     for(;;); // Don't proceed, loop forever
   }
 
-  //display.setFont(&FreeSerif9pt7b);
-  display.setTextSize(2);                  // setTextSize applique est facteur d'échelle qui permet d'agrandir ou réduire la font
+  display.setFont(&FreeSerifBoldItalic18pt7b);
+  //display.setTextSize(2);                  // setTextSize applique est facteur d'échelle qui permet d'agrandir ou réduire la font
   display.setTextColor(WHITE);             // La couleur du texte
   display.setRotation(2);
 }
@@ -253,12 +253,25 @@ void updatePatchPowerOnLCD(bool forceRead) {
     old[i] = potmessage;
     int colone = i * 5;
     lcd.setCursor(colone, 1);
+    if (potmessage < 64)
+    {
     lcd.print(F(" "));
-    if(potmessage > 99) {} // value use 3 char
-    else if(potmessage > 9) { lcd.print(F("0")); }// value use 2 char
-    else { lcd.print(F("00")); } // value use 1 char
+    potmessage =  64 - potmessage;
+    if(potmessage > 9) { lcd.print(F("-")); }// value use 2 char
+    else { lcd.print(F(" -")); } // value use 1 char
     lcd.print(potmessage);
     lcd.print(F(" "));
+    }
+    else
+    {
+    lcd.print(F(" "));
+    potmessage = potmessage - 64;
+    if(potmessage > 9) { lcd.print(F(" ")); }// value use 2 char
+    else { lcd.print(F("  ")); } // value use 1 char
+    lcd.print(potmessage);
+    lcd.print(F(" "));
+    }
+    
   }
 }
 
@@ -285,8 +298,8 @@ void updateOLED(Pot * potWave, Pot * potDWGS)
   if (!( 79 < saveWave &&  saveWave < 96))
   {
     display.clearDisplay();
-    display.setCursor(5,5);                  // On va écrire en x=0, y=0
-    display.println(F("NO DWGS"));
+    display.setCursor(0,22);                  // On va écrire en x=0, y=0
+    display.println(F("NoDwgs"));
     display.display();
     return;
   }
@@ -294,7 +307,7 @@ void updateOLED(Pot * potWave, Pot * potDWGS)
   int value = saveDWGS >> 1;
   strcpy_P(buffer, (char *)pgm_read_word(&(textOLED[value])));  // Necessary casts and dereferencing, just copy.
   display.clearDisplay();
-  display.setCursor(5,5);                  // On va écrire en x=0, y=0
+  display.setCursor(0,22);                  // On va écrire en x=0, y=0
   display.println(buffer);        // un println comme pour écrire sur le port série
   //display.println(freeRam());        // un println comme pour écrire sur le port série
   display.display();
